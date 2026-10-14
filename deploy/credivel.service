@@ -1,0 +1,17 @@
+[Unit]
+Description=Credível API
+After=network.target
+[Service]
+Type=simple
+User=credivel
+Group=credivel
+WorkingDirectory=/opt/credivel/backend
+EnvironmentFile=/etc/credivel/credivel.env
+Environment=SPRING_PROFILES_ACTIVE=demo
+ExecStart=/usr/bin/java -jar /opt/credivel/backend/target/credivel-api-1.0.0.jar
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target

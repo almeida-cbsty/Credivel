@@ -1,0 +1,13 @@
+frontend/node_modules/
+frontend/dist/
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+.env
+.env.*
+!.env.example
+data/
+.aws/
+.agents/
+.codex/

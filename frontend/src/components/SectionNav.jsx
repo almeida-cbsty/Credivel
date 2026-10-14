@@ -1,0 +1,1 @@
+import{NavLink}from'react-router-dom';export default function SectionNav(){return <nav className="section-nav" aria-label="Secções Credível"><NavLink to="/" end>Notícias</NavLink><NavLink to="/publications">Publicações</NavLink></nav>}

@@ -1,0 +1,1 @@
+const b='/api/news';export async function getNews(page=0){const r=await fetch(`${b}?page=${page}&size=9`);if(!r.ok)throw Error('Não foi possível carregar as notícias.');return r.json()}export async function getNewsBySlug(s){const r=await fetch(`${b}/slug/${encodeURIComponent(s)}`);if(!r.ok)throw Error('Notícia não encontrada.');return r.json()}

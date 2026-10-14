@@ -1,0 +1,2 @@
+package org.credivel.news; import java.time.Instant;
+public record NewsResponse(Long id,String title,String slug,String summary,String content,String imageUrl,NewsClassification classification,String source,String author,String category,NewsStatus status,long views,Instant publishedAt,Instant updatedAt){static NewsResponse from(News n){return new NewsResponse(n.getId(),n.getTitle(),n.getSlug(),n.getSummary(),n.getContent(),n.getImageUrl(),n.getClassification(),n.getSource(),n.getAuthor(),n.getCategory(),n.getStatus(),n.getViews(),n.getPublishedAt(),n.getUpdatedAt());}}

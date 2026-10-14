@@ -1,0 +1,2 @@
+package org.credivel.news; import jakarta.validation.constraints.*; import java.time.Instant;
+public record NewsRequest(@NotBlank @Size(max=255) String title,@Size(max=280) String slug,@NotBlank @Size(max=800) String summary,@NotBlank String content,@NotBlank @Size(max=1000) String imageUrl,@NotNull NewsClassification classification,@NotBlank @Size(max=180) String source,@Size(max=160) String author,@NotBlank @Size(max=100) String category,@NotNull NewsStatus status,Instant publishedAt){}

@@ -1,0 +1,1 @@
+const KEY='credivel.session';export const auth={isLogged(){return localStorage.getItem(KEY)==='user@credivel.com'},login(email,password){if(email==='user@credivel.com'&&password==='user123'){localStorage.setItem(KEY,email);return true}return false},logout(){localStorage.removeItem(KEY)}};
