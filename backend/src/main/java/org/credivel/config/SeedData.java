@@ -1,2 +1,36 @@
-package org.credivel.config;import java.time.*;import java.util.*;import org.credivel.news.*;import org.springframework.boot.CommandLineRunner;import org.springframework.context.annotation.*;
-@Configuration class SeedData{@Bean CommandLineRunner seed(NewsRepository r){return x->{if(r.count()>0)return;List.of(sample("Como avaliar a origem de uma informação antes de a partilhar","Um guia de demonstração sobre hábitos de verificação que ajudam a reduzir a desinformação.","A informação deste artigo é fictícia e foi criada apenas para demonstrar a plataforma. Antes de partilhar uma alegação, confirme a fonte original, procure contexto e compare com entidades independentes.","/news-verify.svg",NewsClassification.CREDIVEL,"Literacia digital",3),sample("Mensagem viral sobre alteração de serviço público não tem confirmação oficial","Exemplo fictício de uma publicação que circula sem ligação a uma fonte verificável.","Este é conteúdo de demonstração, não uma notícia real. A alegação apresentada não tem confirmação em canais oficiais e é classificada como falsa nesta simulação.","/news-false.svg",NewsClassification.FALSO,"Verificação",2),sample("Dados abertos facilitam a confirmação de factos","Uma notícia fictícia para ilustrar o estado Credível e a leitura do detalhe.","Conteúdo demonstrativo. Dados publicados com metodologia clara permitem que leitores e redacções confirmem números, datas e declarações no seu contexto original.","/news-data.svg",NewsClassification.CREDIVEL,"Tecnologia",1)).forEach(r::save);};}private News sample(String t,String su,String c,String i,NewsClassification cl,String ca,int d){News n=new News();n.setTitle(t);n.setSlug(t.toLowerCase().replaceAll("[^a-záéíóúç0-9]+","-").replaceAll("(^-|-$)",""));n.setSummary(su);n.setContent(c);n.setImageUrl(i);n.setClassification(cl);n.setSource("Laboratório Credível");n.setAuthor("Equipa editorial");n.setCategory(ca);n.setStatus(NewsStatus.PUBLISHED);n.setPublishedAt(Instant.now().minus(Duration.ofDays(d)));return n;}}
+package org.credivel.config;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.credivel.news.News;
+import org.credivel.news.NewsRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+public class SeedData implements CommandLineRunner {
+    private final NewsRepository repository;
+    private final ObjectMapper mapper;
+
+    public SeedData(NewsRepository repository, ObjectMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
+    @Override
+    @Transactional
+    public void run(String... args) throws Exception {
+        // Existing installations keep their data. Import only into an empty database.
+        if (repository.count() > 0) return;
+        try (var stream = new ClassPathResource("seed/news.json").getInputStream()) {
+            for (var row : mapper.readTree(stream)) {
+                // IDs belong to the source database; generate fresh ones on import.
+                ((ObjectNode) row).remove("id");
+                repository.save(mapper.treeToValue(row, News.class));
+            }
+        }
+    }
+}

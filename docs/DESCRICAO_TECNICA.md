@@ -106,7 +106,7 @@ A classe de arranque chama-se `CredibelApplication`. O artefacto é `credivel-ap
 | `NewsNotFoundException` | Sinalização de artigo inexistente ou não público |
 | `ApiExceptionHandler` | Respostas JSON de erro |
 | `WebConfig` | CORS em `/api/**` |
-| `SeedData` | Três artigos fictícios quando a tabela está vazia |
+| `SeedData` | Importa as 55 notícias de seed/news.json quando a tabela está vazia |
 
 ### 6.1 Visibilidade e publicação
 
@@ -122,7 +122,7 @@ Um slug ausente ou em branco é derivado do título. O serviço remove marcas di
 
 A unicidade é imposta pelo banco; não há geração de sufixo ou tratamento específico de conflito. Uma colisão pode produzir 500. Alterar o título e omitir o slug pode mudar o endereço.
 
-O seed usa outra normalização e preserva alguns caracteres acentuados. O frontend aplica `encodeURIComponent` ao consultar slugs.
+O seed preserva os slugs exportados do banco, incluindo eventuais caracteres acentuados. O frontend aplica `encodeURIComponent` ao consultar slugs.
 
 ### 6.3 Transações e timestamps
 
@@ -134,7 +134,7 @@ Cada GET individual incrementa `views`, sem identificação de visitante ou dedu
 
 ### 6.4 Seed
 
-Se `count()>0`, nenhuma amostra é inserida. Caso a tabela esteja vazia, são criados três artigos fictícios publicados, fonte `Laboratório Credível`, autor `Equipa editorial`, imagens SVG e datas relativas ao arranque. O seed executa em qualquer perfil. Apagar todos os registos e reiniciar pode recriar amostras.
+Se `count()>0`, nenhum registo é inserido. Caso a tabela esteja vazia, são importadas as 55 notícias publicadas de `seed/news.json`, exportadas em 15/10/2026, preservando textos, slugs, imagens, metadados e datas. Os IDs são gerados pela nova base. O seed executa em qualquer perfil. Apagar todos os registos e reiniciar volta a importar o JSON.
 
 ## 7. Modelo de dados
 

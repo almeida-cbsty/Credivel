@@ -104,7 +104,7 @@ sudo systemctl status credivel --no-pager
 sudo journalctl -u credivel -n 100 --no-pager
 ```
 
-Um banco vazio recebe três artigos fictícios no primeiro arranque, inclusive em MySQL. Verifique o conteúdo antes de disponibilizar a aplicação.
+Um banco vazio recebe as 55 notícias de `backend/src/main/resources/seed/news.json` no primeiro arranque, inclusive em MySQL. Bases existentes são preservadas. Para uma instalação local sem MySQL/Nginx, execute `./run.sh` na raiz do projeto; veja o README.
 
 ## 6. Configurar Nginx
 
